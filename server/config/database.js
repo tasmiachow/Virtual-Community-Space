@@ -11,4 +11,6 @@ const config = {
     }
 }
 
-export const pool = new pg.Pool(config)
+const pool = new pg.Pool(config);
+
+export default pool;
