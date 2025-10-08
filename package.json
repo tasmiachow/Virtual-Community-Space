@@ -9,7 +9,8 @@
   "dependencies": {
     "@picocss/pico": "^1.5.7",
     "concurrently": "^7.6.0",
-    "dotenv": "^16.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "nodemon": "^2.0.22",
     "pg": "^8.10.0",

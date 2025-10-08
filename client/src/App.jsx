@@ -12,20 +12,16 @@ const App = () => {
       element: <Locations />
     },
     {
-      path: '/echolounge',
+      path: '/msg',
       element: <LocationEvents index={1} />
     },
     {
-      path: '/houseofblues',
+      path: '/barclays',
       element: <LocationEvents index={2} />
     },
     {
-      path: '/pavilion',
+      path: '/metlifestadium',
       element: <LocationEvents index={3} />
-    },
-    {
-      path: '/americanairlines',
-      element: <LocationEvents index={4} />
     },
     {
       path: '/events',
@@ -37,7 +33,7 @@ const App = () => {
     <div className='app'>
 
       <header className='main-header'>
-        <h1>UnityGrid Plaza</h1>
+        <h1>NYC CONCERTS</h1>
 
         <div className='header-buttons'>
           <Link to='/' role='button'>Home</Link>

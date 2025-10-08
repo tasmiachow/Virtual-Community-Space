@@ -1,62 +1,45 @@
-import React, { useState, useEffect } from 'react'
-import '../css/Event.css'
+import React from 'react';
+import '../css/Event.css';
 
-const Event = (props) => {
+const Event = ({ artist, date, time, image_url, timezone }) => {
 
-    const [event, setEvent] = useState([])
-    const [time, setTime] = useState([])
-    const [remaining, setRemaining] = useState([])
+   const formatDateTime = (dateString, timeString, tz) => {
+        if (!dateString || !timeString) return '';
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const eventData = await EventsAPI.getEventsById(props.id)
-                setEvent(eventData)
-            }
-            catch (error) {
-                throw error
-            }
-        }) ()
-    }, [])
+        // Convert the dateString to a date object and extract just YYYY-MM-DD
+        const dateObj = new Date(dateString);
+        if (isNaN(dateObj.getTime())) return '';
+        const formattedDate = dateObj.toISOString().split('T')[0]; // '2026-09-04'
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const result = await dates.formatTime(event.time)
-                setTime(result)
-            }
-            catch (error) {
-                throw error
-            }
-        }) ()
-    }, [event])
+        // Remove timezone from timeString if any
+        const cleanedTime = timeString.split('+')[0];
 
-    useEffect(() => {
-        (async () => {
-            try {
-                const timeRemaining = await dates.formatRemainingTime(event.remaining)
-                setRemaining(timeRemaining)
-                dates.formatNegativeTimeRemaining(remaining, event.id)
-            }
-            catch (error) {
-                throw error
-            }
-        }) ()
-    }, [event])
+        const iso = `${formattedDate}T${cleanedTime}`;
+        const dateTime = new Date(iso);
+        if (isNaN(dateTime.getTime())) {
+            console.warn('Invalid dateTime:', iso);
+            return '';
+        }
 
-    return (
-        <article className='event-information'>
-            <img src={event.image} />
+        return new Intl.DateTimeFormat('en-US', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+            timeZone: tz || 'UTC',
+        }).format(dateTime);
+        };
 
-            <div className='event-information-overlay'>
-                <div className='text'>
-                    <h3>{event.title}</h3>
-                    <p><i className="fa-regular fa-calendar fa-bounce"></i> {event.date} <br /> {time}</p>
-                    <p id={`remaining-${event.id}`}>{remaining}</p>
-                </div>
-            </div>
-        </article>
-    )
+
+  return (
+    <article className='event-information'>
+      <img src={image_url} alt={artist} />
+      <div className='event-information-overlay'>
+        <div className='text'>
+          <h3>{artist}</h3>
+          <p><i className="fa-regular fa-calendar fa-bounce"></i>  {formatDateTime(date, time, timezone)}</p>
+        </div>
+      </div>
+    </article>
+  )
 }
 
-export default Event
+export default Event;
